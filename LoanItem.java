@@ -15,7 +15,7 @@ abstract class LoanItem extends Item{
         overDueFee = 0;
     }
     //checkout item
-    abstract void loanItem(User user);
+    abstract boolean loanItem(User user);
 
     //return item
     void returnItem(){

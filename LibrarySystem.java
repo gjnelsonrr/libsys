@@ -38,8 +38,10 @@ class LibrarySystem{
 
 
     void loanItem(LoanItem item, User user){
+        if(!item.loanItem(user)){
+            return;
+        }
         user.addLoanItem(item);
-        item.loanItem(user);
         checkedOutItems.add(item);
     }
 
@@ -98,7 +100,11 @@ class LibrarySystem{
         System.out.println();
         System.out.println("Tommy checking out AV item");
         library.loanItem(itemTwo, userOne);
+        System.out.println("Tommy checking out AV item again");
+        library.loanItem(itemTwo, userOne);
         System.out.println("Tommy checking out book item");
+        library.loanItem(itemOne, userOne);
+        System.out.println("Tommy checking out book item again");
         library.loanItem(itemOne, userOne);
         userOne.displayLoans();
         System.out.println();
