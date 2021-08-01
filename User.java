@@ -1,11 +1,11 @@
 import java.util.*;
+import java.time.*;
 class User{
     String firstName;
     String lastName;
     String address;
     int phoneNumber;
     int cardNumber;
-    double overDueFee;
     boolean adult;
     ArrayList<LoanItem> loanList = new ArrayList<LoanItem>();
     ArrayList<Request> itemRequest = new ArrayList<Request>();
@@ -17,7 +17,6 @@ class User{
         phoneNumber = phone;
         cardNumber = card;
         this.adult = adult;
-        overDueFee = 0;
     }
 
     //add item to loan list
@@ -33,14 +32,6 @@ class User{
         itemRequest.add(request);
     }
 
-    void overDueFee(double fee){
-        overDueFee = fee;
-    }
-
-    double getOverDueFee(){
-        return overDueFee;
-    }
-
     //remove item from loan list
     void removeLoanItem(Item item){
         loanList.remove(item);
@@ -52,6 +43,34 @@ class User{
     //type of user
     boolean isAdult(){
         return adult;
+    }
+
+    boolean hasOverDueItems(LocalDate currentDay){
+        boolean overDue = false;
+        for(LoanItem item : loanList){
+            if(currentDay.isAfter(item.getDueDate()))
+            System.out.println(item.getTitle() + " is overdue!");
+            overDue = true;
+        }
+        return overDue;
+    }
+
+    boolean canCheckOut(LoanItem item, LocalDate currentDay){
+        if(item.isLoanedOut()){
+            System.out.println("Item already checked out!");
+            return false;
+        }
+        else if(!isAdult() && getNumberOfLoans() > 4){
+            System.out.println("User has too many items checked out!");
+            return false;
+        }
+        else if(hasOverDueItems(currentDay)){
+            System.out.println("Return overdue items to check out more items!");
+            return false;
+        }
+        else{
+            return true;
+        }
     }
     //display user info
     void display(){

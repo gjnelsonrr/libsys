@@ -1,21 +1,23 @@
 import java.time.*;
 import java.time.format.*;
 import java.time.temporal.*;
+import java.text.DecimalFormat;
 abstract class LoanItem extends Item{
     boolean isOut;
     boolean repeatRenew;
     User checkedOutBy;
     LocalDate checkOutDate;
     LocalDate returnDate;
-    double overDueFee;
+    double fee;
+
     //constructor
     LoanItem(int id, String title, double value){
         super(id, title, value);
         isOut = false;
-        overDueFee = 0;
+        fee = 0;
     }
     //checkout item
-    abstract boolean loanItem(User user);
+    abstract void loanItem(User user);
 
     //return item
     void returnItem(){
@@ -33,13 +35,25 @@ abstract class LoanItem extends Item{
         return returnDate;
     }
 
-    void overDue(){
-        overDueFee = overDueFee + .1;
-        if(overDueFee > value){
-            overDueFee = value;
+    void checkOverDue(LocalDate currentDay){
+        if (currentDay.isAfter(returnDate)){
+            calcFee(currentDay);
         }
-        checkedOutBy.overDueFee(overDueFee);
+
     }
+
+    void calcFee(LocalDate currentDay){
+        DecimalFormat money = new DecimalFormat("0.00");
+        long days = ChronoUnit.DAYS.between(returnDate, currentDay);
+        System.out.println(title + " is overdue by " + days + " days!");
+        fee = days * .1;
+        if(fee > value){
+            fee = value;
+        }
+        System.out.println("A fee of $" + money.format(fee) + " is owed!");
+    }
+
+
 
     String dueDateString(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");

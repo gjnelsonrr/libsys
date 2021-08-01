@@ -8,7 +8,9 @@ class LibrarySystem{
     ArrayList<LoanItem> checkedOutItems = new ArrayList<LoanItem>();
     ArrayList<Request> requestList = new ArrayList<Request>();
     ArrayList<Renew> renewList = new ArrayList<Renew>();
-    LocalDate currentDay = LocalDate.now();
+    LocalDate currentDay = LocalDate.of(2021, 8, 1);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+    String today = currentDay.format(formatter);
 
     void addUser(User newUser){
         userList.add(newUser);
@@ -36,28 +38,27 @@ class LibrarySystem{
 
     }
 
+    void setCurrentDay(int year, int month, int day){
+        currentDay = LocalDate.of(year, month, day);
+    }
 
     void loanItem(LoanItem item, User user){
-        if(!item.loanItem(user)){
+        if(!user.canCheckOut(item, currentDay)){
             return;
         }
+        item.loanItem(user);
         user.addLoanItem(item);
         checkedOutItems.add(item);
     }
 
     void returnItem(LoanItem item, User user){
+        System.out.println("Todays Date: " + today);
+        item.checkOverDue(currentDay);
         user.removeLoanItem(item);
         item.returnItem();
         checkedOutItems.remove(item);
     }
 
-    void checkOverDueItems(){
-        for(LoanItem item: checkedOutItems){
-            if(item.getDueDate().isBefore(currentDay)){
-                item.overDue();
-            }
-        }
-    }
     void displayUsers(){
         for (User user: userList){
             System.out.println("-----------------------");
@@ -95,33 +96,17 @@ class LibrarySystem{
         LoanItem itemSeven = new LoanBook(1277, "Bad Book", 10, false);
         library.addItem(itemSeven);
 
-        System.out.println("Displaying all items in library");
-        library.displayItems();
-        System.out.println();
-        System.out.println("Tommy checking out AV item");
+        System.out.println("Tommy checking out " + itemTwo.getTitle());
         library.loanItem(itemTwo, userOne);
-        System.out.println("Tommy checking out AV item again");
-        library.loanItem(itemTwo, userOne);
-        System.out.println("Tommy checking out book item");
-        library.loanItem(itemOne, userOne);
-        System.out.println("Tommy checking out book item again");
-        library.loanItem(itemOne, userOne);
+        library.setCurrentDay(2021, 10, 20);
+        System.out.println("Tommy checking out " + itemThree.getTitle());
+        library.loanItem(itemThree, userOne);
         userOne.displayLoans();
-        System.out.println();
-        System.out.println("Tommy renewing both items");
-        library.addRenew(itemOne, userOne);
-        library.addRenew(itemTwo, userOne);
-        userOne.displayLoans();
-        System.out.println();
-        System.out.println("Tommy renewing both items AGAIN");
-        library.addRenew(itemOne, userOne);
-        library.addRenew(itemTwo, userOne);
-        userOne.displayLoans();
-        System.out.println("Returning items");
+        System.out.println("Tommy returning " + itemTwo.getTitle());
         library.returnItem(itemTwo, userOne);
-        library.returnItem(itemOne, userOne);
+        System.out.println("Tommy checking out " + itemThree.getTitle());
+        library.loanItem(itemThree, userOne);
         userOne.displayLoans();
-
 
 
 

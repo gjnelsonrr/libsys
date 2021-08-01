@@ -9,16 +9,7 @@ class LoanBook extends LoanItem{
         this.bestseller = bestseller;
     }
 
-    boolean loanItem(User user){
-        if(isOut){
-            System.out.println("Book already checked out!");
-            return false;
-        }
-        else if(!user.isAdult() && user.getNumberOfLoans() > 4){
-            System.out.println("User has too many books checked out!");
-            return false;
-        }
-        
+    void loanItem(User user){
         checkedOutBy = user;
         isOut = true;
         checkOutDate = LocalDate.now();
@@ -28,7 +19,6 @@ class LoanBook extends LoanItem{
         else{
             returnDate = checkOutDate.plus(3, ChronoUnit.WEEKS);
         }
-        return true;
     }
 
     boolean renew(){

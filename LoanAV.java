@@ -6,21 +6,11 @@ class LoanAV extends LoanItem{
         super(id, title, value);
     }
 
-    boolean loanItem(User user){
-        if(isOut){
-            System.out.println("Item already checked out!");
-            return false;
-        }
-        else if(!user.isAdult() && user.getNumberOfLoans() > 4){
-            System.out.println("User has too many items checked out!");
-            return false;
-        }
-        
+    void loanItem(User user){
         checkedOutBy = user;
         isOut = true;
         checkOutDate = LocalDate.now();
         returnDate = checkOutDate.plus(2, ChronoUnit.WEEKS);
-        return true;
     }
 
     boolean renew(){
