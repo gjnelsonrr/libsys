@@ -27,6 +27,7 @@ class LibrarySystem{
         Renew renew = new Renew(item, user);
         for(Request request: requestList){
             if(request.getItem() == renew.getItem()){
+                System.out.println("Item is requested and cannot be renewed!");
                 return;
             }
         }
@@ -106,6 +107,13 @@ class LibrarySystem{
         library.returnItem(itemTwo, userOne);
         System.out.println("Tommy checking out " + itemThree.getTitle());
         library.loanItem(itemThree, userOne);
+        userOne.displayLoans();
+        library.setCurrentDay(2021, 8, 10);
+        System.out.println("Tommy renewing " + itemThree.getTitle());
+        library.addRenew(itemThree, userOne);
+        userOne.displayLoans();
+        System.out.println("Tommy renewing again " + itemThree.getTitle());
+        library.addRenew(itemThree, userOne);
         userOne.displayLoans();
 
 

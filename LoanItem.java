@@ -24,6 +24,7 @@ abstract class LoanItem extends Item{
         checkedOutBy = null;
         isOut = false;
         checkOutDate = null;
+        repeatRenew = false;
 
     }
     //check if out

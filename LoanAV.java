@@ -15,6 +15,7 @@ class LoanAV extends LoanItem{
 
     boolean renew(){
         if(repeatRenew){
+            System.out.println("Cannot renew same item twice!");
             return false;
         }
         returnDate = returnDate.plus(2, ChronoUnit.WEEKS);

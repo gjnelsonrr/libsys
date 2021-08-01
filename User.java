@@ -89,7 +89,7 @@ class User{
 
     void displayLoans(){
         System.out.println("-----------------------");
-        System.out.println("Books Checked Out by " + firstName + " " + lastName + ":");
+        System.out.println("Items Checked Out by " + firstName + " " + lastName + ":");
         System.out.println("-----------------------");
         for(LoanItem item: loanList){
             System.out.println("Title: " + item.getTitle() +" || Due Date: " + item.dueDateString());
