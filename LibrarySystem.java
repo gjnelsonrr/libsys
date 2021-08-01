@@ -9,8 +9,6 @@ class LibrarySystem{
     ArrayList<Request> requestList = new ArrayList<Request>();
     ArrayList<Renew> renewList = new ArrayList<Renew>();
     LocalDate currentDay = LocalDate.of(2021, 8, 1);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
-    String today = currentDay.format(formatter);
 
     void addUser(User newUser){
         userList.add(newUser);
@@ -52,6 +50,8 @@ class LibrarySystem{
     }
 
     void returnItem(LoanItem item, User user){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+        String today = currentDay.format(formatter);
         System.out.println("Todays Date: " + today);
         item.checkOverDue(currentDay);
         user.removeLoanItem(item);
@@ -98,7 +98,7 @@ class LibrarySystem{
 
         System.out.println("Tommy checking out " + itemTwo.getTitle());
         library.loanItem(itemTwo, userOne);
-        library.setCurrentDay(2021, 10, 20);
+        library.setCurrentDay(2022, 12, 20);
         System.out.println("Tommy checking out " + itemThree.getTitle());
         library.loanItem(itemThree, userOne);
         userOne.displayLoans();
