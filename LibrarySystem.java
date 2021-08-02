@@ -24,13 +24,17 @@ class LibrarySystem{
     }
 
     void addRenew(LoanItem item, User user){
-        Renew renew = new Renew(item, user);
+        if(!user.hasItem(item)){
+            System.out.println("Cannot renew item not checked out");
+            return;
+        }
         for(Request request: requestList){
-            if(request.getItem() == renew.getItem()){
+            if(request.getItem() == item){
                 System.out.println("Item is requested and cannot be renewed!");
                 return;
             }
         }
+        Renew renew = new Renew(item, user);
         if(item.renew()){
             renewList.add(renew);
         }
@@ -111,6 +115,9 @@ class LibrarySystem{
         library.setCurrentDay(2021, 8, 10);
         System.out.println("Tommy renewing " + itemThree.getTitle());
         library.addRenew(itemThree, userOne);
+        userOne.displayLoans();
+        System.out.println("Tommy renewing " + itemTwo.getTitle());
+        library.addRenew(itemTwo, userOne);
         userOne.displayLoans();
         System.out.println("Tommy renewing again " + itemThree.getTitle());
         library.addRenew(itemThree, userOne);

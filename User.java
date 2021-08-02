@@ -72,6 +72,15 @@ class User{
             return true;
         }
     }
+
+    boolean hasItem(LoanItem item){
+        for(LoanItem loan : loanList){
+            if(item == loan){
+                return true;
+            }
+        }
+        return false;
+    }
     //display user info
     void display(){
         System.out.println("First Name: " + firstName);
